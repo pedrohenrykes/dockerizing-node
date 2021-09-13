@@ -1,14 +1,5 @@
 version: "3.9"
 services:
-  backend:
-    build: .docker/backend
-    image: node:t_backend
-    volumes:
-      - backend_modules:/src/backend/node_modules
-      - ./backend:/src/backend
-    ports:
-      - 3000:3333
-    command: bash -c "npm i && npm run dev"
   frontend:
     build: .docker/frontend
     image: node:t_frontend
@@ -18,6 +9,36 @@ services:
     ports:
       - 3333:8080
     command: bash -c "npm i && npm run serve"
+    depends_on:
+      - backend
+
+  backend:
+    build: .docker/backend
+    image: node:t_backend
+    volumes:
+      - backend_modules:/src/backend/node_modules
+      - ./backend:/src/backend
+    ports:
+      - 3000:3333
+    command: bash -c "npm i && npm run dev"
+    depends_on:
+      - database
+
+  database:
+    build: .docker/database
+    image: pgsql:t_database
+    ports:
+      - 5432:5432
+    volumes:
+      - database_modules:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - DEV_DB=development
+      - DEV_USER=developer
+      - DEV_PASSWORD=&d3v3l0p3r
 volumes:
   backend_modules:
   frontend_modules:
+  database_modules:
