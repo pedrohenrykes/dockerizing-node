@@ -39,12 +39,12 @@ services:
     volumes:
       - database_volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - DEV_DB=development
-      - DEV_USER=developer
-      - DEV_PASSWORD=&d3v3l0p3r
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      DEV_DB: $DEV_DB
+      DEV_USER: $DEV_USER
+      DEV_PASSWORD: $DEV_PASSWORD
 volumes:
   database_volume:
 
