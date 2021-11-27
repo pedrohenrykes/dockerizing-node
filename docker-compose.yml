@@ -3,11 +3,13 @@ services:
   frontend:
     build: docker/frontend
     image: node:t_frontend
+    ports:
+      - 3333:8080
+    networks:
+      - frontend_network
     volumes:
       - ./frontend/node_modules:/src/frontend/node_modules
       - ./frontend:/src/frontend
-    ports:
-      - 3333:8080
     command: bash -c "npm i && npm run serve"
     depends_on:
       - backend
@@ -15,11 +17,14 @@ services:
   backend:
     build: docker/backend
     image: node:t_backend
+    ports:
+      - 3000:3333
+    networks:
+      - frontend_network
+      - backend_network
     volumes:
       - ./backend/node_modules:/src/backend/node_modules
       - ./backend:/src/backend
-    ports:
-      - 3000:3333
     command: bash -c "npm i && npm run dev"
     depends_on:
       - database
@@ -29,8 +34,10 @@ services:
     image: pgsql:t_database
     ports:
       - 5432:5432
+    networks:
+      - backend_network
     volumes:
-      - database_modules:/var/lib/postgresql/data
+      - database_volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -39,4 +46,8 @@ services:
       - DEV_USER=developer
       - DEV_PASSWORD=&d3v3l0p3r
 volumes:
-  database_modules:
+  database_volume:
+
+networks:
+  frontend_network:
+  backend_network:
