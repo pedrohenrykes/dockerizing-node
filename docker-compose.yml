@@ -1,9 +1,9 @@
 version: "3.9"
 services:
   frontend:
-    container_name: projeto-front
+    container_name: project_front
     build: docker/frontend
-    image: node:t_frontend
+    image: node:project_frontend
     ports:
       - 3333:8080
     networks:
@@ -16,9 +16,9 @@ services:
       - backend
 
   backend:
-    container_name: projeto-back
+    container_name: project_back
     build: docker/backend
-    image: node:t_backend
+    image: node:project_backend
     ports:
       - 3000:3333
     networks:
@@ -32,9 +32,9 @@ services:
       - database
 
   database:
-    container_name: projeto-db
+    container_name: project_db
     build: docker/database
-    image: pgsql:t_database
+    image: pgsql:project_database
     ports:
       - 5432:5432
     networks:
