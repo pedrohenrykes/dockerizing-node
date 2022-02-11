@@ -1,11 +1,5 @@
 *
-!.gitignore
-!docker-compose.yml
 !docker/
-!docker/frontend/
-!docker/frontend/Dockerfile
-!docker/backend/
-!docker/backend/Dockerfile
-!docker/database/
-!docker/database/Dockerfile
-!docker/database/init-user-db.sh
+!docker-compose.yml
+!.gitignore
+!.env.example
