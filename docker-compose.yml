@@ -1,46 +1,46 @@
 version: "3.9"
 services:
   frontend:
-    container_name: project_front
-    build: docker/frontend
+    container_name: project_frontend
+    build: ./docker/frontend
     image: node:project_frontend
     ports:
       - 3333:8080
     networks:
-      - frontend_network
+      - frontend
     volumes:
-      - ./frontend/node_modules:/src/frontend/node_modules
       - ./frontend:/src/frontend
+      - ./frontend/node_modules:/src/frontend/node_modules
     command: bash -c "npm i && npm run serve"
     depends_on:
       - backend
 
   backend:
-    container_name: project_back
-    build: docker/backend
+    container_name: project_backend
+    build: ./docker/backend
     image: node:project_backend
     ports:
       - 3000:3333
     networks:
-      - frontend_network
-      - backend_network
+      - frontend
+      - backend
     volumes:
-      - ./backend/node_modules:/src/backend/node_modules
       - ./backend:/src/backend
+      - ./backend/node_modules:/src/backend/node_modules
     command: bash -c "npm i && npm run dev"
     depends_on:
       - database
 
   database:
-    container_name: project_db
-    build: docker/database
+    container_name: project_database
+    build: ./docker/database
     image: pgsql:project_database
     ports:
       - 5432:5432
     networks:
-      - backend_network
+      - backend
     volumes:
-      - database_volume:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_USER: $POSTGRES_USER
@@ -48,11 +48,13 @@ services:
       DEV_DB: $DEV_DB
       DEV_USER: $DEV_USER
       DEV_PASSWORD: $DEV_PASSWORD
-volumes:
-  database_volume:
 
 networks:
-  frontend_network:
+  frontend:
     name: project_frontend_network
-  backend_network:
+  backend:
     name: project_backend_network
+
+volumes:
+  database:
+    name: project_database_volume
