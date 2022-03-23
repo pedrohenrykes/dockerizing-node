@@ -1,9 +1,9 @@
 version: "3.9"
 services:
   frontend:
-    container_name: project_frontend
+    container_name: project-frontend
     build: ./docker/frontend
-    image: node:project_frontend
+    image: project-frontend:1.0.0
     ports:
       - 3333:8080
     networks:
@@ -16,9 +16,9 @@ services:
       - backend
 
   backend:
-    container_name: project_backend
+    container_name: project-backend
     build: ./docker/backend
-    image: node:project_backend
+    image: project-backend:1.0.0
     ports:
       - 3000:3333
     networks:
@@ -32,9 +32,9 @@ services:
       - database
 
   database:
-    container_name: project_database
+    container_name: project-database
     build: ./docker/database
-    image: pgsql:project_database
+    image: project-database:1.0.0
     ports:
       - 5432:5432
     networks:
@@ -51,10 +51,10 @@ services:
 
 networks:
   frontend:
-    name: project_frontend_network
+    name: project-frontend
   backend:
-    name: project_backend_network
+    name: project-backend
 
 volumes:
   database:
-    name: project_database_volume
+    name: project-database
